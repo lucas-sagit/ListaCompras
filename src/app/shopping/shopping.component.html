@@ -2,47 +2,43 @@
   <div class="container">
     <h2>Lista de compras</h2>
 
-    <form #frm = "ngForm" class="add-item-form" (ngSubmit)="adicionarItem()">
-      <input type="text"
-             id="item"
-             name="item"
-             [(ngModel)]="item"
-             placeholder="Digite o item" required>
+    <form #frm="ngForm" class="add-item-form" (ngSubmit)="adicionarItem()">
+      <input type="text" id="item" name="item" [(ngModel)]="item" placeholder="Digite o item" required>
       <button type="submit">Adicionar</button>
-
       <button type="button" (click)="limparLista()">Limpar lista</button>
+      <button type="button" (click)="downloadPDF()">Baixar lista</button>
     </form>
 
-    <table>
-      <thead>
+ <div id="lista">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Item</th>
+        <th>Comprar</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (atributo of lista; track atributo.id) {
         <tr>
-          <th>#</th>
-          <th>Item</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for ( atributo of lista; track atributo.id ) {
-         <tr>
           <td>{{ atributo.id }}</td>
           <td>
-            <span [ngClass]="{'item_riscado' : atributo.comprado}">
-                                               {{atributo.nome}}
+            <span [ngClass]="{ 'item_riscado': atributo.comprar}">
+              {{ atributo.nome }}
             </span>
           </td>
           <td>
-            <input type="checkbox"
-                   (click)="item_riscado(atributo)"
-                   [checked]="atributo.comprado"></td>
+            <input type="checkbox" (click)="item_riscado(atributo)" [checked]="atributo.comprar"/>
+          </td>
         </tr>
-        }
-        @empty {
-          <tr>
-            <td colspan="3">Nenhum item na lista</td>
-          </tr>
-        }
+      }
+      @empty {
+        <tr>
+          <td colspan="3">Nenhum item na lista</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
 
-      </tbody>
-    </table>
-  </div>
 </div>

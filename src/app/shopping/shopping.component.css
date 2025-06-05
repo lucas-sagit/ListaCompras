@@ -110,3 +110,22 @@ th, td {
     width: 100%;
   }
 }
+
+.add-item-form {
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+li.comprar {
+  text-decoration: line-through;
+  color: gray;
+}

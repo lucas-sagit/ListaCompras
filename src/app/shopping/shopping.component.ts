@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ItemLista } from '../item_lista';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-shopping',
@@ -11,10 +13,8 @@ import { ItemLista } from '../item_lista';
 })
 export class ShoppingComponent {
 
-  item: string='';
+  item: string = '';
   lista: ItemLista[] = [];
-
-
 
   adicionarItem() {
     let itemLista = new ItemLista();
@@ -23,15 +23,32 @@ export class ShoppingComponent {
 
     this.lista.push(itemLista);
 
-    this.item ="";
+    this.item = "";
   }
 
   item_riscado(item: ItemLista) {
-    item.comprado = !item.comprado;
+    item.comprar = !item.comprar;
   }
 
   limparLista() {
     this.lista = [];
+  }
+
+  downloadPDF() {
+    const doc = new jsPDF();
+    const element = document.getElementById('lista');
+
+    if (element) {
+      html2canvas(element).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = doc.getImageProperties(imgData);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        doc.save('lista_de_compras.pdf');
+      });
+    }
   }
 }
 
