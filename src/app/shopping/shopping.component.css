@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+ .all {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alinha ao topo */
+  min-height: 100vh;       /* Usa no mínimo a altura da tela */
+  padding: 40px 20px;      /* Espaço interno para respiro */
+  background-color: #f0f0f0;
+}
+
+.container {
+    background-color: #f1f1fa;
+    border-radius: 12px;
+    box-shadow: 0 18px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px 30px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto; /* Permite rolagem se necessário */
+}
+
+h2{
+  font-size: 24px;
+  margin-bottom: 18px;
+  color: #000000;
+}
+
+.add-item-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+
+}
+
+button[type="submit"] {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button[type="button"] {
+  padding: 10px 15px;
+  background-color: #ed0e0e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead {
+  background-color:#007bff;
+  color: white;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #332f2f;
+}
+
+.item_riscado {
+  text-decoration: line-through;
+}
+
+@media (max-width: 600px) {
+  .add-item-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-item-form input,
+  .add-item-form button {
+    width: 100%;
+  }
+}
