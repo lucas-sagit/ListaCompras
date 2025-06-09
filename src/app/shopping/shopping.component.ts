@@ -42,21 +42,52 @@ export class ShoppingComponent {
     this.lista = [];
   }
 
-  downloadPDF() {
-    const doc = new jsPDF();
-    const element = document.getElementById('lista');
+downloadPDF() {
+  const hoje = new Date();
+  const dataFormatada = hoje.toLocaleDateString('pt-BR');
+  const doc = new jsPDF();
 
-    if (element) {
-      html2canvas(element).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const imgProps = doc.getImageProperties(imgData);
-        const pdfWidth = doc.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  const margin = 10;
+  const lineHeight = 10;
+  let y = margin;
 
-        doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        doc.save('lista_de_compras.pdf');
-      });
-    }
-  }
+  // Título
+  doc.setFontSize(16);
+  doc.setFont("helvetica", "bold");
+  doc.text("Lista de Compras", margin, y);
+
+  // Data no canto superior direito
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Data: ${dataFormatada}`, 160, y); // x = 160 coloca à direita
+
+  y += lineHeight + 2;
+
+  // Cabeçalho da tabela
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.text("Nº", margin, y);
+  doc.text("Item", margin + 20, y);
+
+  y += lineHeight;
+
+  // Conteúdo da lista
+  doc.setFont("helvetica", "normal");
+  this.lista.forEach((item: any, index: number) => {
+    doc.text(`${index + 1}`, margin, y);
+    doc.text(`${item.nome}`, margin + 20, y);
+    y += lineHeight;
+  });
+
+  // Espaço final e total
+  y += lineHeight;
+  doc.setFont("helvetica", "bold");
+  doc.text(`Total de itens: ${this.lista.length}`, margin, y);
+
+  // Salvar PDF
+  doc.save('lista_de_compras.pdf');
+}
+
+
 }
 

@@ -20,7 +20,7 @@
     padding: 20px 30px;
     text-align: center;
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
     max-height: 90vh;
     overflow-y: auto; /* Permite rolagem se necessário */
 }
@@ -78,6 +78,16 @@ button[type="button"] {
   transition: background-color 0.3s ease;
 }
 
+.download button{
+  color: white;
+  background-color: #047944;
+  }
+
+i {
+  cursor: pointer;
+  transition: background-color 0.3s ease
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -115,19 +125,4 @@ th, td {
   margin-bottom: 20px;
 }
 
-.btn-icon {
-  background: none;
-  border: none;
-  color: #d9534f; /* vermelho suave */
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 4px;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.btn-icon:hover {
-  background-color: #000000; /* fundo vermelho claro */
-  color: #c9302c; /* vermelho mais escuro no hover */
-}
 

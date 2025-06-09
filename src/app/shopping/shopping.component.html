@@ -6,7 +6,9 @@
       <input type="text" id="item" name="item" [(ngModel)]="item" placeholder="Digite o item" required>
       <button type="submit">Adicionar</button>
       <button type="button" (click)="limparLista()">Limpar lista</button>
-      <button type="button" (click)="downloadPDF()">Baixar lista</button>
+      <div class="download">
+        <button type="button" (click)="downloadPDF()">Baixar lista</button>
+      </div>
     </form>
 
     <div id="lista">
@@ -28,14 +30,9 @@
               </span>
             </td>
             <td>
-              <input type="button" (click)="removerItem(atributo)" class="btn-icon">
-                 <i class="fas fa-trash-alt"></i>
-            </tr>
-
-              <!-- <button (click)="removerItem(atributo)" class="btn-icon">
-                 <i class="fas fa-trash-alt"></i>
-              </button>
-            </td> -->
+              <i class="fas fa-trash-alt" type="button" (click)="removerItem(atributo)"></i>
+            </td>
+          </tr>
           }
           @empty {
           <tr>
