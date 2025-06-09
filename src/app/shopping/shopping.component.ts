@@ -17,6 +17,12 @@ export class ShoppingComponent {
   lista: ItemLista[] = [];
 
   adicionarItem() {
+
+    if (this.item.trim() === '') {
+      alert('Por favor, insira um item.');
+      return;
+    }
+
     let itemLista = new ItemLista();
     itemLista.nome = this.item;
     itemLista.id = this.lista.length + 1;
@@ -39,10 +45,22 @@ export class ShoppingComponent {
   }
 
   limparLista() {
+
+    if (this.lista.length === 0) {
+      alert('A lista já está vazia.');
+      return;
+    }
+
     this.lista = [];
   }
 
 downloadPDF() {
+
+  if (this.lista.length === 0) {
+    alert('A lista está vazia. Adicione itens antes de gerar o PDF.');
+    return;
+  }
+  
   const agora = new Date();
   const dataHoraFormatada = agora.toLocaleString('pt-BR');
   const doc = new jsPDF();
