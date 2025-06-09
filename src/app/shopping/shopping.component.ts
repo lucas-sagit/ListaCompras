@@ -43,8 +43,8 @@ export class ShoppingComponent {
   }
 
 downloadPDF() {
-  const hoje = new Date();
-  const dataFormatada = hoje.toLocaleDateString('pt-BR');
+  const agora = new Date();
+  const dataHoraFormatada = agora.toLocaleString('pt-BR');
   const doc = new jsPDF();
 
   const margin = 10;
@@ -59,7 +59,7 @@ downloadPDF() {
   // Data no canto superior direito
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text(`Data: ${dataFormatada}`, 160, y); // x = 160 coloca à direita
+  doc.text(`Data: ${dataHoraFormatada}`, 160, y); // x = 160 coloca à direita
 
   y += lineHeight + 2;
 
