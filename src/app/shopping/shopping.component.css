@@ -115,17 +115,19 @@ th, td {
   margin-bottom: 20px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  padding: 8px;
+.btn-icon {
+  background: none;
+  border: none;
+  color: #d9534f; /* vermelho suave */
+  font-size: 1.2rem;
   cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-li.comprar {
-  text-decoration: line-through;
-  color: gray;
+.btn-icon:hover {
+  background-color: #000000; /* fundo vermelho claro */
+  color: #c9302c; /* vermelho mais escuro no hover */
 }
+

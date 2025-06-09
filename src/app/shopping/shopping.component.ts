@@ -26,8 +26,16 @@ export class ShoppingComponent {
     this.item = "";
   }
 
-  item_riscado(item: ItemLista) {
-    item.comprar = !item.comprar;
+  // comando para riscar o item, mas não vejo necessário, vai ser substituído por um botão de remover.
+  // item_riscado(item: ItemLista) {
+  //   item.comprar = !item.comprar;
+  // }
+
+  removerItem(item: ItemLista) {
+    const index = this.lista.indexOf(item);
+    if (index > -1) {
+      this.lista.splice(index, 1);
+    }
   }
 
   limparLista() {
