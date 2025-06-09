@@ -20,7 +20,7 @@
     padding: 20px 30px;
     text-align: center;
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
     max-height: 90vh;
     overflow-y: auto; /* Permite rolagem se necessário */
 }
@@ -78,6 +78,16 @@ button[type="button"] {
   transition: background-color 0.3s ease;
 }
 
+.download button{
+  color: white;
+  background-color: #047944;
+  }
+
+i {
+  cursor: pointer;
+  transition: background-color 0.3s ease
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -110,3 +120,9 @@ th, td {
     width: 100%;
   }
 }
+
+.add-item-form {
+  margin-bottom: 20px;
+}
+
+

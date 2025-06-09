@@ -2,47 +2,45 @@
   <div class="container">
     <h2>Lista de compras</h2>
 
-    <form #frm = "ngForm" class="add-item-form" (ngSubmit)="adicionarItem()">
-      <input type="text"
-             id="item"
-             name="item"
-             [(ngModel)]="item"
-             placeholder="Digite o item" required>
+    <form #frm="ngForm" class="add-item-form" (ngSubmit)="adicionarItem()">
+      <input type="text" id="item" name="item" [(ngModel)]="item" placeholder="Digite o item" required>
       <button type="submit">Adicionar</button>
-
       <button type="button" (click)="limparLista()">Limpar lista</button>
+      <div class="download">
+        <button type="button" (click)="downloadPDF()">Baixar lista</button>
+      </div>
     </form>
 
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Item</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for ( atributo of lista; track atributo.id ) {
-         <tr>
-          <td>{{ atributo.id }}</td>
-          <td>
-            <span [ngClass]="{'item_riscado' : atributo.comprado}">
-                                               {{atributo.nome}}
-            </span>
-          </td>
-          <td>
-            <input type="checkbox"
-                   (click)="item_riscado(atributo)"
-                   [checked]="atributo.comprado"></td>
-        </tr>
-        }
-        @empty {
+    <div id="lista">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Itens</th>
+            <th>Comprar</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (atributo of lista; track atributo.id) {
+          <tr>
+            <td>{{ atributo.id }}</td>
+            <td>
+              <span [ngClass]="{ 'removerItem': atributo.comprar}">
+                {{ atributo.nome }}
+              </span>
+            </td>
+            <td>
+              <i class="fas fa-trash-alt" type="button" (click)="removerItem(atributo)"></i>
+            </td>
+          </tr>
+          }
+          @empty {
           <tr>
             <td colspan="3">Nenhum item na lista</td>
           </tr>
-        }
+          }
+        </tbody>
+      </table>
+    </div>
 
-      </tbody>
-    </table>
   </div>
-</div>
