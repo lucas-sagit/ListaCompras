@@ -12,8 +12,12 @@ import html2canvas from 'html2canvas';
   styleUrl: './shopping.component.css'
 })
 export class ShoppingComponent {
-removerItem(_t26: ItemLista) {
-throw new Error('Method not implemented.');
+
+removerItem(item: ItemLista){
+  const index = this.lista.indexOf(item);
+  if (index > -1) {
+    this.lista.splice(index, 1);
+  }
 }
 
   item: string = '';
@@ -34,7 +38,7 @@ throw new Error('Method not implemented.');
     );
 
     if (itemExiste) {
-      alert(`O item "${nomeItem}" já foi adicionado à lista.`);
+      alert(`O item "${nomeItem}" Já foi adicionado à lista.`);
       return;
     }
 
@@ -63,7 +67,7 @@ throw new Error('Method not implemented.');
   downloadPDF() {
 
     if (this.lista.length === 0) {
-      alert('A lista está vazia. Adicione itens antes de gerar o PDF.');
+      alert('A lista está vazia, adicione itens antes de gerar o PDF.');
       return;
     }
 
