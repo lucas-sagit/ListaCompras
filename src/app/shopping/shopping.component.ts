@@ -13,20 +13,20 @@ import html2canvas from 'html2canvas';
 })
 export class ShoppingComponent {
 
-removerItem(item: ItemLista){
-  const index = this.lista.indexOf(item);
-  if (index > -1) {
-    this.lista.splice(index, 1);
-    this.reculcularIds();
+  removerItem(item: ItemLista) {
+    const index = this.lista.indexOf(item);
+    if (index > -1) {
+      this.lista.splice(index, 1);
+      this.reculcularIds();
+    }
   }
-}
 
-// Método para recalcular os IDs dos itens após remoção
+  // Método para recalcular os IDs dos itens após remoção
   reculcularIds() {
     this.lista.forEach((item, index) => {
       item.id = index + 1;
-  })
-}
+    })
+  }
 
   item: string = '';
   lista: ItemLista[] = [];
@@ -90,7 +90,7 @@ removerItem(item: ItemLista){
     // Título
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("Lista de Compras", margin, y);
+    doc.text("Lista das Compras", margin, y);
 
     // Data no canto superior direito
     doc.setFontSize(10);
@@ -103,22 +103,36 @@ removerItem(item: ItemLista){
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
     doc.text("Nº", margin, y);
+    doc.text("Quantidade", margin + 50, y);
     doc.text("Item", margin + 20, y);
 
     y += lineHeight;
 
     // Conteúdo da lista
+    // const totalItens = this.lista.length;
+    // const totalQuantidade = this.lista.reduce((sum, item) => sum + (Number(item.quantidade) || 0), 0);
+
+
     doc.setFont("helvetica", "normal");
     this.lista.forEach((item: any, index: number) => {
       doc.text(`${index + 1}`, margin, y);
       doc.text(`${item.nome}`, margin + 20, y);
+      doc.text(`${item.quantidade}`, margin + 50, y);
+
       y += lineHeight;
     });
 
     // Espaço final e total
+
+    // Calcular a posição para o total
     y += lineHeight;
     doc.setFont("helvetica", "bold");
     doc.text(`Total de itens: ${this.lista.length}`, margin, y);
+
+    // Calcular a quantidade total
+    const totalQuantidade = this.lista.reduce((sum, item) => sum + (Number(item.quantidade) || 0), 0);
+    doc.text(`Quantidade total: ${totalQuantidade}`, margin + 50, y);
+    y += lineHeight;
 
     // Salvar PDF
     doc.save('lista_de_compras.pdf');

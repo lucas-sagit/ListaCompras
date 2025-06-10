@@ -39,17 +39,16 @@ h2{
   margin-bottom: 10px;
 }
 
-input {
+form input {
   flex: 1;
   padding: 10px;
   border: 1px solid #007bff;
   border-radius: 4px;
 }
 
-input:focus {
+form input:focus {
   outline: none;
   border-color: #007bff;
-
 }
 
 button[type="submit"] {
@@ -125,4 +124,8 @@ th, td {
   margin-bottom: 20px;
 }
 
-
+input {
+  width: 50px;
+  text-align: center;
+  padding: 5px;
+}
