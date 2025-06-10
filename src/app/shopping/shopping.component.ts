@@ -17,7 +17,15 @@ removerItem(item: ItemLista){
   const index = this.lista.indexOf(item);
   if (index > -1) {
     this.lista.splice(index, 1);
+    this.reculcularIds();
   }
+}
+
+// Método para recalcular os IDs dos itens após remoção
+  reculcularIds() {
+    this.lista.forEach((item, index) => {
+      item.id = index + 1;
+  })
 }
 
   item: string = '';
