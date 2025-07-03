@@ -71,7 +71,30 @@ export class ShoppingComponent {
     this.item = '';
   }
 
-  limparLista() {
+  calcularTotalGeral(): number {
+    return this.lista.reduce((total, item) => {
+      const quantidade = Number(item.quantidade) || 0;
+      const valor = Number(item.valor) || 0;
+      return total + (quantidade * valor);
+    }, 0);
+  }
+
+  formatarValor(valor: number): string {
+    // Exibe com 2 casas decimais (ex: 2.5 -> '2,50')
+    return (valor || 0).toFixed(2).replace('.', ',');
+  }
+
+ atualizarValor(event: Event, atributo: any) {
+  const input = event.target as HTMLInputElement;
+  const valorDigitado = input?.value || '';
+
+  const soNumeros = valorDigitado.replace(/\D/g, '');
+  const valorConvertido = parseFloat((parseInt(soNumeros || '0', 10) / 100).toFixed(2));
+
+  atributo.valor = valorConvertido;
+}
+
+limparLista() {
     if (this.lista.length === 0) {
       alert('A lista já está vazia.');
       return;
