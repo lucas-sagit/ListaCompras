@@ -18,7 +18,9 @@
             <th>#</th>
             <th>Itens</th>
             <th>Qtd</th>
-            <th>Comprar</th>
+            <th>Valor R$:</th>
+            <th>Apagar</th>
+            <th>Editar</th>
           </tr>
         </thead>
           <tbody>
@@ -34,13 +36,19 @@
                   <input type="number" [(ngModel)]="atributo.quantidade" min="1" required>
                 </td>
                 <td>
+                  <input type="text" [(ngModel)]="atributo.valor" min="0" step="0.01" required>
+                </td>
+                <td>
                   <i class="fas fa-trash-alt" type="button" (click)="removerItem(atributo)"></i>
+                </td>
+                <td>
+                  <i class="fa-solid fa-pencil" type="button" (click)="editarItem(atributo)"></i>
                 </td>
               </tr>
             }
             @empty {
               <tr>
-            <td colspan="4">Nenhum item na lista</td>
+            <td colspan="6">Nenhum item na lista</td>
           </tr>
           }
         </tbody>

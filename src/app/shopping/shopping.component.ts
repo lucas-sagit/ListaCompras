@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ItemLista } from '../item_lista';
 import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
+import autoTable from 'jspdf-autotable';
+// import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-shopping',
@@ -11,6 +12,7 @@ import html2canvas from 'html2canvas';
   templateUrl: './shopping.component.html',
   styleUrl: './shopping.component.css'
 })
+
 export class ShoppingComponent {
 
   removerItem(item: ItemLista) {
@@ -21,7 +23,17 @@ export class ShoppingComponent {
     }
   }
 
-  // Método para recalcular os IDs dos itens após remoção
+  editarItem(item: ItemLista) {
+    const novoNome = prompt('Editar item:', item.nome);
+    if (novoNome !== null && novoNome.trim() !== '') {
+      // Verifica se o novo nome já existe na lista (comparação sem acento e sem diferenciar maiúsculas/minúsculas)
+      const itemExiste = this.lista.some(el =>
+        el.nome?.toLowerCase() === novoNome.toLowerCase() && el.id !== item.id
+      );
+      item.nome = novoNome.trim();
+    }
+  }
+
   reculcularIds() {
     this.lista.forEach((item, index) => {
       item.id = index + 1;
@@ -34,13 +46,11 @@ export class ShoppingComponent {
   adicionarItem() {
     const nomeItem = this.item?.trim();
 
-    // Verifica se o campo está vazio
     if (!nomeItem) {
       alert('Por favor, insira um item.');
       return;
     }
 
-    // Verifica se o item já foi adicionado (comparação sem acento e sem diferenciar maiúsculas/minúsculas)
     const itemExiste = this.lista.some(el =>
       el.nome?.toLowerCase() === nomeItem.toLowerCase()
     );
@@ -61,19 +71,15 @@ export class ShoppingComponent {
     this.item = '';
   }
 
-
   limparLista() {
-
     if (this.lista.length === 0) {
       alert('A lista já está vazia.');
       return;
     }
-
     this.lista = [];
   }
 
   downloadPDF() {
-
     if (this.lista.length === 0) {
       alert('A lista está vazia, adicione itens antes de gerar o PDF.');
       return;
@@ -83,61 +89,65 @@ export class ShoppingComponent {
     const dataHoraFormatada = agora.toLocaleString('pt-BR');
     const doc = new jsPDF();
 
-    const margin = 10;
-    const lineHeight = 10;
-    let y = margin;
-
     // Título
-    doc.setFontSize(16);
+    doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.text("Lista das Compras", margin, y);
+    doc.text("Lista de Compras", 14, 15);
 
     // Data no canto superior direito
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
-    doc.text(`Data: ${dataHoraFormatada}`, 160, y); // x = 160 coloca à direita
+    doc.text(`Data: ${dataHoraFormatada}`, 170, 15, { align: 'right' });
 
-    y += lineHeight + 2;
+    // Corpo da tabela
+    const body = this.lista.map((item: any, index: number) => [
+      index + 1,
+      item.nome,
+      item.quantidade
+    ]);
 
-    // Cabeçalho da tabela
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.text("Nº", margin, y);
-    doc.text("Quantidade", margin + 50, y);
-    doc.text("Item", margin + 20, y);
-
-    y += lineHeight;
-
-    // Conteúdo da lista
-    // const totalItens = this.lista.length;
-    // const totalQuantidade = this.lista.reduce((sum, item) => sum + (Number(item.quantidade) || 0), 0);
-
-
-    doc.setFont("helvetica", "normal");
-    this.lista.forEach((item: any, index: number) => {
-      doc.text(`${index + 1}`, margin, y);
-      doc.text(`${item.nome}`, margin + 20, y);
-      doc.text(`${item.quantidade}`, margin + 50, y);
-
-      y += lineHeight;
+    autoTable(doc, {
+      startY: 25,
+      head: [['#', 'Item', 'Quantidade']],
+      body,
+      theme: 'striped',
+      headStyles: {
+        fillColor: [33, 150, 243], // azul Material
+        textColor: 255,
+        halign: 'center',
+        valign: 'middle',
+      },
+      bodyStyles: {
+        fontSize: 10,
+        valign: 'middle',
+      },
+      columnStyles: {
+        0: { cellWidth: 10, halign: 'center' },
+        1: { cellWidth: 130 }, // Item (maior)
+        2: { cellWidth: 30, halign: 'center' },
+      },
     });
 
-    // Espaço final e total
-
-    // Calcular a posição para o total
-    y += lineHeight;
-    doc.setFont("helvetica", "bold");
-    doc.text(`Total de itens: ${this.lista.length}`, margin, y);
-
-    // Calcular a quantidade total
+    // Totais
     const totalQuantidade = this.lista.reduce((sum, item) => sum + (Number(item.quantidade) || 0), 0);
-    doc.text(`Quantidade total: ${totalQuantidade}`, margin + 50, y);
-    y += lineHeight;
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
 
-    // Salvar PDF
-    doc.save('lista_de_compras.pdf');
+    // Definindo as posições alinhadas com as colunas da tabela
+    const colIdX = 15;        // alinhado com a coluna "#"
+    const colQuantidadeX = 170; // alinhado com "Quantidade"
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+
+    // Alinha "Total de itens" à esquerda na primeira coluna
+    doc.text(`Total de itens: ${this.lista.length}`, colIdX, finalY, { align: 'left' });
+
+    // Alinha "Quantidade total" à direita na última coluna
+    doc.text(`Quantidade total: ${totalQuantidade}`, colQuantidadeX, finalY, { align: 'right' });
+
+
+    // Salvar
+    doc.save('lista.pdf');
   }
-
-
 }
 
