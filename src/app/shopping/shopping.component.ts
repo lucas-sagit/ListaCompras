@@ -99,7 +99,12 @@ export class ShoppingComponent {
     this.lista = [];
   }
 
-  downloadPDF() {
+  ajustarLargura(event: Event) {
+  const input = event.target as HTMLInputElement;
+  input.style.width = (input.value.length + 1) + 'ch';
+}
+
+downloadPDF() {
   if (this.lista.length === 0) {
     alert('A lista está vazia, adicione itens antes de gerar o PDF.');
     return;
@@ -163,7 +168,6 @@ export class ShoppingComponent {
     4: { cellWidth: 80, halign: 'right' },   // Valor Total
   },
 });
-
 
   // Totais
   const totalItens = this.lista.length;

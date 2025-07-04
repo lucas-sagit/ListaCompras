@@ -11,53 +11,57 @@
       </div>
     </form>
 
-    <div id="lista">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Itens</th>
-            <th>Qtd</th>
-            <th>Valor R$:</th>
-            <th>Valor Total R$:</th>
-            <th>Apagar</th>
-            <th>Editar</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (atributo of lista; track atributo.id) {
-          <tr>
-            <td>{{ atributo.id }}</td>
-            <td>
-              <span [ngClass]="{ 'removerItem': atributo.comprar}">
-                {{ atributo.nome }}
-              </span>
-            </td>
-            <td>
-              <input type="number" [(ngModel)]="atributo.quantidade" min="1" required>
-            </td>
-            <td>
-              <input type="text" [value]="formatarValor(atributo.valor ?? 0)" (input)="atualizarValor($event, atributo)">
-            </td>
-            <td>
-              {{ (atributo.quantidade ? +atributo.quantidade : 0) * (atributo.valor ? +atributo.valor : 0) |
-              currency:'BRL' }}
-            </td>
-            <td>
-              <i class="fas fa-trash-alt" type="button" (click)="removerItem(atributo)"></i>
-            </td>
-            <td>
-              <i class="fa-solid fa-pencil" type="button" (click)="editarItem(atributo)"></i>
-            </td>
-          </tr>
-          }
-          @empty {
-          <tr>
-            <td colspan="7">Nenhum item na lista</td>
-          </tr>
-          }
-        </tbody>
-      </table>
+    <div class="lista-wrapper">
+      <div class="lista" id="lista">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Itens</th>
+              <th>Qtd</th>
+              <th>Valor R$:</th>
+              <th>Valor Total R$:</th>
+              <th>Apagar</th>
+              <th>Editar</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (atributo of lista; track atributo.id) {
+            <tr>
+              <td>{{ atributo.id }}</td>
+              <td>
+                <span [ngClass]="{ 'removerItem': atributo.comprar}">
+                  {{ atributo.nome }}
+                </span>
+              </td>
+              <td class="input-quantidade">
+                <input type="number" [(ngModel)]="atributo.quantidade" min="1" required>
+              </td>
+              <td class="input-auto">
+                <input type="text" [value]="formatarValor(atributo.valor ?? 0)"
+                  (input)="atualizarValor($event, atributo); ajustarLargura($event)"
+                  #inputRef>
+                <span class="input-espelho">{{ inputRef.value || '0,00' }}</span>
+              </td>
+              <td>
+                {{ (atributo.quantidade ? +atributo.quantidade : 0) * (atributo.valor ? +atributo.valor : 0) |
+                currency:'BRL' }}
+              </td>
+              <td>
+                <i class="fas fa-trash-alt" type="button" (click)="removerItem(atributo)"></i>
+              </td>
+              <td>
+                <i class="fa-solid fa-pencil" type="button" (click)="editarItem(atributo)"></i>
+              </td>
+            </tr>
+            }
+            @empty {
+            <tr>
+              <td colspan="7">Nenhum item na lista</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
-
   </div>
