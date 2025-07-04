@@ -153,10 +153,10 @@ export class ShoppingComponent {
   },
   columnStyles: {
     0: { cellWidth: 10, halign: 'center' },  // #
-    1: { cellWidth: 75 },                    // Item
+    1: { cellWidth: 45 },                    // Item
     2: { cellWidth: 25, halign: 'center' },  // Quantidade
-    3: { cellWidth: 40, halign: 'right' },   // Valor
-    4: { cellWidth: 40, halign: 'right' },   // Valor Total
+    3: { cellWidth: 30, halign: 'right' },   // Valor
+    4: { cellWidth: 80, halign: 'right' },   // Valor Total
   },
 });
 
@@ -176,7 +176,7 @@ export class ShoppingComponent {
   // Ajustar colunas para os rodapés ficarem na mesma linha
   const posicoesX = {
     totalItens: 20,      // à esquerda
-    quantidadeTotal: 110, // centro
+    quantidadeTotal: 80, // centro
     valorTotalLabel: 160,// mais à direita
     valorTotalValor: 200 // mais à direita
   };
@@ -185,8 +185,8 @@ export class ShoppingComponent {
   doc.setFontSize(12);
 
   doc.text(`Total de itens: ${totalItens}`, posicoesX.totalItens, finalY, { align: 'left' });
-  doc.text(`Quantidade total: ${totalQuantidade}`, posicoesX.quantidadeTotal, finalY, { align: 'center' });
-  doc.text(`Valor total:`, posicoesX.valorTotalLabel, finalY, { align: 'right' });
+  doc.text(`Qtd total: ${totalQuantidade}`, posicoesX.quantidadeTotal, finalY, { align: 'center' });
+  doc.text(``, posicoesX.valorTotalLabel, finalY, { align: 'right' });
   doc.text(valorTotalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), posicoesX.valorTotalValor, finalY, { align: 'right' });
 
   // Salvar PDF
