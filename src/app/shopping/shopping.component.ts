@@ -148,8 +148,12 @@ export class ShoppingComponent {
     valign: 'middle',
   },
   bodyStyles: {
-    fontSize: 10,
+    fontSize: 9,
     valign: 'middle',
+  },
+  styles: {
+   overflow: 'linebreak',
+    cellPadding: 2,
   },
   columnStyles: {
     0: { cellWidth: 10, halign: 'center' },  // #
