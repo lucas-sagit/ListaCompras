@@ -34,6 +34,15 @@ export class ShoppingComponent {
     }
   }
 
+  opcoesItens = [];
+
+  onNomeSelecionado(atributo: any): void {
+    if (atributo.nome && !atributo.quantidade) {
+      atributo.quantidade = 1;
+    }
+  }
+
+
   reculcularIds() {
     this.lista.forEach((item, index) => {
       item.id = index + 1;
@@ -100,106 +109,106 @@ export class ShoppingComponent {
   }
 
   ajustarLargura(event: Event) {
-  const input = event.target as HTMLInputElement;
-  input.style.width = (input.value.length + 1) + 'ch';
-}
-
-downloadPDF() {
-  if (this.lista.length === 0) {
-    alert('A lista está vazia, adicione itens antes de gerar o PDF.');
-    return;
+    const input = event.target as HTMLInputElement;
+    input.style.width = (input.value.length + 1) + 'ch';
   }
 
-  const agora = new Date();
-  const dataHoraFormatada = agora.toLocaleString('pt-BR');
-  const doc = new jsPDF();
+  downloadPDF() {
+    if (this.lista.length === 0) {
+      alert('A lista está vazia, adicione itens antes de gerar o PDF.');
+      return;
+    }
 
-  // Título
-  doc.setFontSize(18);
-  doc.setFont("helvetica", "bold");
-  doc.text("Lista de Compras", 14, 15);
+    const agora = new Date();
+    const dataHoraFormatada = agora.toLocaleString('pt-BR');
+    const doc = new jsPDF();
 
-  // Data no canto superior direito
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text(`Data: ${dataHoraFormatada}`, 200, 15, { align: 'right' });
+    // Título
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.text("Lista de Compras", 14, 15);
 
-  // Montar dados da tabela
-  const body = this.lista.map((item, index) => {
-    const quantidade = Number(item.quantidade) || 0;
-    const valor = Number(item.valor) || 0;
-    const valorTotalItem = quantidade * valor;
-    return [
-      index + 1,
-      item.nome ?? '',
-      quantidade,
-      valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
-      valorTotalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-    ];
-  });
+    // Data no canto superior direito
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Data: ${dataHoraFormatada}`, 200, 15, { align: 'right' });
 
-  // Cabeçalho
-  const head = [['#', 'Item', 'Quantidade', 'Valor', 'Valor Total']];
+    // Montar dados da tabela
+    const body = this.lista.map((item, index) => {
+      const quantidade = Number(item.quantidade) || 0;
+      const valor = Number(item.valor) || 0;
+      const valorTotalItem = quantidade * valor;
+      return [
+        index + 1,
+        item.nome ?? '',
+        quantidade,
+        valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+        valorTotalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+      ];
+    });
 
-  autoTable(doc, {
-  startY: 25,
-  head,
-  body,
-  theme: 'striped',
-  headStyles: {
-    fillColor: [33, 150, 243],
-    textColor: 255,
-    halign: 'center',
-    valign: 'middle',
-  },
-  bodyStyles: {
-    fontSize: 9,
-    valign: 'middle',
-  },
-  styles: {
-   overflow: 'linebreak',
-    cellPadding: 2,
-  },
-  columnStyles: {
-    0: { cellWidth: 10, halign: 'center' },  // #
-    1: { cellWidth: 45 },                    // Item
-    2: { cellWidth: 25, halign: 'center' },  // Quantidade
-    3: { cellWidth: 30, halign: 'right' },   // Valor
-    4: { cellWidth: 80, halign: 'right' },   // Valor Total
-  },
-});
+    // Cabeçalho
+    const head = [['#', 'Item', 'Quantidade', 'Valor', 'Valor Total']];
 
-  // Totais
-  const totalItens = this.lista.length;
-  const totalQuantidade = this.lista.reduce((sum, item) => sum + (Number(item.quantidade) || 0), 0);
-  const valorTotalGeral = this.lista.reduce(
-    (sum, item) => sum + ((Number(item.quantidade) || 0) * (Number(item.valor) || 0)),
-    0
-  );
+    autoTable(doc, {
+      startY: 25,
+      head,
+      body,
+      theme: 'striped',
+      headStyles: {
+        fillColor: [33, 150, 243],
+        textColor: 255,
+        halign: 'center',
+        valign: 'middle',
+      },
+      bodyStyles: {
+        fontSize: 9,
+        valign: 'middle',
+      },
+      styles: {
+        overflow: 'linebreak',
+        cellPadding: 2,
+      },
+      columnStyles: {
+        0: { cellWidth: 10, halign: 'center' },  // #
+        1: { cellWidth: 45 },                    // Item
+        2: { cellWidth: 25, halign: 'center' },  // Quantidade
+        3: { cellWidth: 30, halign: 'right' },   // Valor
+        4: { cellWidth: 80, halign: 'right' },   // Valor Total
+      },
+    });
 
-  // Posição abaixo da tabela
-     const finalY = (doc as any).lastAutoTable.finalY + 10;
+    // Totais
+    const totalItens = this.lista.length;
+    const totalQuantidade = this.lista.reduce((sum, item) => sum + (Number(item.quantidade) || 0), 0);
+    const valorTotalGeral = this.lista.reduce(
+      (sum, item) => sum + ((Number(item.quantidade) || 0) * (Number(item.valor) || 0)),
+      0
+    );
+
+    // Posição abaixo da tabela
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
 
 
-  // Ajustar colunas para os rodapés ficarem na mesma linha
-  const posicoesX = {
-    totalItens: 20,      // à esquerda
-    quantidadeTotal: 80, // centro
-    valorTotalLabel: 160,// mais à direita
-    valorTotalValor: 200 // mais à direita
-  };
+    // Ajustar colunas para os rodapés ficarem na mesma linha
+    const posicoesX = {
+      totalItens: 20,      // à esquerda
+      quantidadeTotal: 80, // centro
+      valorTotalLabel: 160,// mais à direita
+      valorTotalValor: 200 // mais à direita
+    };
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
 
-  doc.text(`Total de itens: ${totalItens}`, posicoesX.totalItens, finalY, { align: 'left' });
-  doc.text(`Qtd total: ${totalQuantidade}`, posicoesX.quantidadeTotal, finalY, { align: 'center' });
-  doc.text(``, posicoesX.valorTotalLabel, finalY, { align: 'right' });
-  doc.text(valorTotalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), posicoesX.valorTotalValor, finalY, { align: 'right' });
+    doc.text(`Total de itens: ${totalItens}`, posicoesX.totalItens, finalY, { align: 'left' });
+    doc.text(`Qtd total: ${totalQuantidade}`, posicoesX.quantidadeTotal, finalY, { align: 'center' });
+    doc.text(``, posicoesX.valorTotalLabel, finalY, { align: 'right' });
+    doc.text(valorTotalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), posicoesX.valorTotalValor, finalY, { align: 'right' });
 
-  // Salvar PDF
-  doc.save('lista.pdf');
-}
+    // Salvar PDF
+    doc.save('lista.pdf');
+  }
 
 }
 
