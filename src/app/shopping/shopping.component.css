@@ -9,7 +9,6 @@
   justify-content: center;
   align-items: flex-start; /* Alinha ao topo */
   min-height: 100vh;       /* Usa no mínimo a altura da tela */
-  padding: 40px 20px;      /* Espaço interno para respiro */
   background-color: #f0f0f0;
 }
 
@@ -17,7 +16,7 @@
     background-color: #f1f1fa;
     border-radius: 12px;
     box-shadow: 0 18px 20px rgba(0, 0, 0, 0.2);
-    padding: 20px 30px;
+    padding: 1px;
     text-align: center;
     width: 100%;
     max-width: 700px;
@@ -26,7 +25,7 @@
 }
 
 h2{
-  font-size: 24px;
+  font-size: 2px;
   margin-bottom: 18px;
   color: #000000;
 }
@@ -79,14 +78,15 @@ button[type="button"] {
 
 .input-auto {
   position: relative;
+  display: inline-block;
+  width: auto;
 }
 
 .input-auto input {
   width: auto;
-  min-width: 40px;
-  max-width: 50%;
   padding: 5px;
   font: inherit;
+  text-align: center;
 }
 
 .input-auto .input-espelho {
@@ -94,7 +94,6 @@ button[type="button"] {
   position: absolute;
   white-space: pre;
   font: inherit;
-  padding: 5px;
 }
 
 .download button{
@@ -128,10 +127,11 @@ th, td {
   text-decoration: line-through;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 608px) {
   .add-item-form {
     flex-direction: column;
     align-items: stretch;
+    width: 100%;
   }
 
   .add-item-form input,
@@ -140,31 +140,31 @@ th, td {
   }
 }
 
-@media (max-width:  600px) {
+@media (max-width:  610px) {
   .lista-wrapper {
-    width: auto;
-
-    margin-top: 10px;
+    width: 100%;
   }
 
   .lista table {
+    font-size: 14px;
+    border-collapse: collapse;
     font-size: 14px;
   }
 
   .lista th,
   .lista td {
-    padding: 6px;
+    padding: 3px;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .lista td input {
     width: 50%;
     box-sizing: border-box;
   }
-
-  /* TIRA A ROLAGEM */
 }
 
-  h2 {
+h2 {
     font-size: 20px;
   }
 
