@@ -61,10 +61,6 @@ button[type="submit"] {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
 button[type="button"] {
   padding: 10px 15px;
   background-color: #ed0e0e;
@@ -188,3 +184,56 @@ h2 {
 }
 
 /* teste */
+.opcoes-container {
+  position: relative;
+}
+
+.menu-opcoes {
+    position: absolute;
+    inset-inline-start: -25px;
+    inset-block-start: -50px;
+    border-radius: 5px;
+    z-index: 100;
+    right: 10px;
+}
+
+.menu-opcoes button {
+ border: 1px solid #9b9090;
+  border-radius: 10px;
+  padding: 5px 10px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.editar{
+  background-color: #1482f7;
+  color: #ccc;
+}
+
+.remover{
+  background-color: #ed0e0e;
+  color: #ccc
+}
+
+.menu-opcoes button:hover {
+  background-color: #8c9297;
+}
+
+@media (max-width: 610px) {
+  .menu-opcoes {
+    position: absolute;
+    inset-inline-start: -40px;
+    inset-block-start: -70px;
+    min-width: unset;
+    display: flex;
+    flex-direction: column;
+    /* gap: 8px; */
+  }
+
+  .menu-opcoes button {
+    width: 100%;
+    font-size: 12px;
+    padding: 7px 8px;
+  }
+}
