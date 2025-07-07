@@ -3,7 +3,8 @@
     <h2>Lista</h2>
 
     <form #frm="ngForm" class="add-item-form" (ngSubmit)="adicionarItem()">
-      <input type="text" id="item" name="item" [(ngModel)]="item" placeholder="Digite o item" required>
+      <input type="text" id="item" name="item" [(ngModel)]="item"
+        placeholder="Digite o item" required>
       <button type="submit">Adicionar</button>
       <button type="button" (click)="limparLista()">Limpar lista</button>
       <div class="download">
@@ -33,26 +34,40 @@
                   {{ atributo.nome }}
                 </span>
               </td>
-              <td class="input-quantidade">
-                <input type="number" [(ngModel)]="atributo.quantidade" min="1" required>
-              </td>
-              <td class="input-auto">
-                <input type="text" [value]="formatarValor(atributo.valor ?? 0)"
-                  (input)="atualizarValor($event, atributo); ajustarLargura($event)"
-                  #inputRef>
-                <span class="input-espelho">{{ inputRef.value || '0,00' }}</span>
+              <td>
+                <div class="input-quantidade">
+                  <input type="number" [(ngModel)]="atributo.quantidade" min="1"
+                  required>
+                </div>
               </td>
               <td>
-                {{ (atributo.quantidade ? +atributo.quantidade : 0) * (atributo.valor ? +atributo.valor : 0) |
+                <div class="input-auto">
+                  <input type="text" [value]="formatarValor(atributo.valor ?? 0)"
+                  (input)="atualizarValor($event, atributo); ajustarLargura($event)"
+                  #inputRef>
+                  <span class="input-espelho">{{ inputRef.value || '0,00'
+                  }}</span>
+                  </div>
+              </td>
+              <td>
+                {{ (atributo.quantidade ? +atributo.quantidade : 0) *
+                (atributo.valor ? +atributo.valor : 0) |
                 currency:'BRL' }}
               </td>
-                  <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                <td>
-                  <i class="fas fa-trash-alt" type="button" (click)="removerItem(atributo)"></i>
-                </td>
-                <td>
-                  <i class="fa-solid fa-pencil" type="button" (click)="editarItem(atributo)"></i>
-                </td>
+              <td>
+                <div class="opcoes-container">
+                  <i class="fa fa-ellipsis-v"
+                    type="button"
+                    (click)="abrirMenuOpcoes(atributo); $event.stopPropagation()"
+                    aria-hidden="true"></i>
+
+                  <!-- Menu de opções visível somente para o item selecionado -->
+                  <div class="menu-opcoes" *ngIf="itemSelecionado === atributo">
+                    <button class= "editar" (click)="editarItem(atributo)">Editar</button>
+                    <button class= "remover" (click)="removerItem(atributo)">Remover</button>
+                  </div>
+                </div>
+              </td>
             </tr>
             }
             @empty {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ItemLista } from '../item_lista';
@@ -14,6 +14,27 @@ import autoTable from 'jspdf-autotable';
 })
 
 export class ShoppingComponent {
+
+  // teste aqui
+itemSelecionado: ItemLista | null = null;
+  menuRef: any;
+
+abrirMenuOpcoes(item: ItemLista): void {
+  if (this.itemSelecionado === item) {
+    this.itemSelecionado = null; // Fecha se clicar novamente
+  } else {
+    this.itemSelecionado = item;
+  }
+}
+
+@HostListener('document:click', ['$event'])
+fecharMenuClicarFora(event: MouseEvent): void {
+  const target = event.target as HTMLElement;
+
+  if (!target.closest('.opcoes-container')) {
+    this.itemSelecionado = null;
+  }
+}
 
   removerItem(item: ItemLista) {
     const index = this.lista.indexOf(item);
@@ -33,16 +54,7 @@ export class ShoppingComponent {
       item.nome = novoNome.trim();
     }
   }
-
-  opcoesItens = [];
-
-  onNomeSelecionado(atributo: any): void {
-    if (atributo.nome && !atributo.quantidade) {
-      atributo.quantidade = 1;
-    }
-  }
-
-
+// teste final
   reculcularIds() {
     this.lista.forEach((item, index) => {
       item.id = index + 1;
