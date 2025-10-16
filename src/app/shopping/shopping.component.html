@@ -79,17 +79,11 @@
                 </td>
                 <td>
                   <div class="item-actions">
-                    <button class="action-btn edit" (click)="editarItem(atributo)" title="Editar">
-                      <i class="fas fa-edit"></i>
+                    <button class="action-btn edit" (click)="editarItem(atributo)" title="Editar nome">
+                      <i class="fas fa-pencil-alt"></i>
                     </button>
                     <button class="action-btn delete" (click)="removerItem(atributo)" title="Remover">
                       <i class="fas fa-trash"></i>
-                    </button>
-                    <button class="action-btn toggle"
-                            (click)="toggleComprar(atributo)"
-                            [class.completed]="atributo.comprar"
-                            title="Marcar como comprado">
-                      <i class="fas fa-check"></i>
                     </button>
                   </div>
                 </td>
