@@ -12,9 +12,7 @@ import autoTable from 'jspdf-autotable';
   templateUrl: './shopping.component.html',
   styleUrl: './shopping.component.css'
 })
-
 export class ShoppingComponent {
-  // Properties
   item: string = '';
   lista: ItemLista[] = [];
   itemSelecionado: ItemLista | null = null;
@@ -96,16 +94,19 @@ export class ShoppingComponent {
     this.item = '';
   }
 
- formatarValor(valor: number): string {
-  return (valor || 0).toFixed(2).replace('.', ',');
-}
+  formatarValor(valor: number): string {
+    return (valor || 0).toFixed(2).replace('.', ',');
+  }
 
-atualizarValor(event: Event, atributo: ItemLista): void {
-  const input = event.target as HTMLInputElement;
-  let valorDigitado = input.value.replace(',', '.');
-  let valorConvertido = parseFloat(valorDigitado);
-  atributo.valor = isNaN(valorConvertido) ? 0 : valorConvertido;
-}
+  atualizarValor(event: Event, atributo: ItemLista): void {
+    const input = event.target as HTMLInputElement;
+    const valorDigitado = input?.value || '';
+
+    const soNumeros = valorDigitado.replace(/\D/g, '');
+    const valorConvertido = parseFloat((parseInt(soNumeros || '0', 10) / 100).toFixed(2));
+
+    atributo.valor = valorConvertido;
+  }
 
   limparLista(): void {
     if (this.lista.length === 0) {
@@ -207,11 +208,9 @@ atualizarValor(event: Event, atributo: ItemLista): void {
     doc.text(`Total de itens: ${totalItens}`, posicoesX.totalItens, finalY, { align: 'left' });
     doc.text(`Qtd total: ${totalQuantidade}`, posicoesX.quantidadeTotal, finalY, { align: 'center' });
     doc.text(`Valor Total:`, posicoesX.valorTotalLabel, finalY, { align: 'right' });
-    doc.text(valorTotalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+    doc.text(valorTotalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), 
              posicoesX.valorTotalValor, finalY, { align: 'right' });
 
     doc.save('lista_de_compras.pdf');
   }
 }
-
-

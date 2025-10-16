@@ -1,82 +1,113 @@
 <div class="all">
   <div class="container">
-    <h2>Lista</h2>
+    <header class="app-header">
+      <h2>Lista de Compras</h2>
+      <div class="total-display">
+        Total: {{ calcularTotal() | currency:'BRL' }}
+      </div>
+    </header>
 
     <form #frm="ngForm" class="add-item-form" (ngSubmit)="adicionarItem()">
-      <input type="text" id="item" name="item" [(ngModel)]="item"
-        placeholder="Digite o item" required>
-      <button type="submit">Adicionar</button>
-      <button type="button" (click)="limparLista()">Limpar lista</button>
-      <div class="download">
-        <button type="button" (click)="downloadPDF()">Baixar lista</button>
+      <div class="input-group">
+        <input
+          type="text"
+          id="item"
+          name="item"
+          [(ngModel)]="item"
+          placeholder="Digite o item"
+          required
+          class="form-input"
+        >
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Adicionar
+        </button>
+      </div>
+      <div class="action-buttons">
+        <button type="button" class="btn btn-danger" (click)="limparLista()">
+          <i class="fas fa-trash"></i> Limpar lista
+        </button>
+        <button type="button" class="btn btn-success" (click)="downloadPDF()">
+          <i class="fas fa-download"></i> Baixar lista
+        </button>
       </div>
     </form>
 
     <div class="lista-wrapper">
       <div class="lista" id="lista">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Itens</th>
-              <th>Qtd</th>
-              <th>Valor R$:</th>
-              <th>V. Total R$:</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (atributo of lista; track atributo.id) {
-            <tr>
-              <td>{{ atributo.id }}</td>
-              <td>
-                <span [ngClass]="{ 'removerItem': atributo.comprar}">
-                  {{ atributo.nome }}
-                </span>
-              </td>
-              <td>
-                <div class="input-quantidade">
-                  <input type="number" [(ngModel)]="atributo.quantidade" min="1"
-                  required>
-                </div>
-              </td>
-              <td>
-                <div class="input-auto">
-                  <input type="text" [value]="formatarValor(atributo.valor ?? 0)"
-                  (input)="atualizarValor($event, atributo); ajustarLargura($event)"
-                  #inputRef>
-                  <span class="input-espelho">{{ inputRef.value || '0,00'
-                  }}</span>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qtd</th>
+                <th>Valor Un.</th>
+                <th>Total</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (atributo of lista; track atributo.id) {
+              <tr [class.completed]="atributo.comprar">
+                <td class="item-name">
+                  <span [ngClass]="{ 'removerItem': atributo.comprar }">
+                    {{ atributo.nome }}
+                  </span>
+                </td>
+                <td>
+                  <div class="quantity-control">
+                    <button class="qty-btn" (click)="decrementarQuantidade(atributo)">-</button>
+                    <input type="number"
+                           [(ngModel)]="atributo.quantidade"
+                           min="1"
+                           class="qty-input"
+                           required>
+                    <button class="qty-btn" (click)="incrementarQuantidade(atributo)">+</button>
                   </div>
-              </td>
-              <td>
-                {{ (atributo.quantidade ? +atributo.quantidade : 0) *
-                (atributo.valor ? +atributo.valor : 0) |
-                currency:'BRL' }}
-              </td>
-              <td>
-                <div class="opcoes-container">
-                  <i class="fa fa-ellipsis-v"
-                    type="button"
-                    (click)="abrirMenuOpcoes(atributo); $event.stopPropagation()"
-                    aria-hidden="true"></i>
-
-                  <!-- Menu de opções visível somente para o item selecionado -->
-                  <div class="menu-opcoes" *ngIf="itemSelecionado === atributo">
-                    <button class= "editar" (click)="editarItem(atributo)">Editar</button>
-                    <button class= "remover" (click)="removerItem(atributo)">Remover</button>
+                </td>
+                <td>
+                  <div class="input-auto">
+                    <input type="number"
+         [(ngModel)]="atributo.valor"
+                           (input)="atualizarValor($event, atributo)"
+                           class="price-input"
+                           step="0.01"
+                           min="0">
                   </div>
-                </div>
-              </td>
-            </tr>
-            }
-            @empty {
-            <tr>
-              <td colspan="6">Nenhum item na lista</td>
-            </tr>
-            }
-          </tbody>
-        </table>
+                </td>
+                <td class="total-col">
+                  {{ (atributo.quantidade ? +atributo.quantidade : 0) * (atributo.valor ? +atributo.valor : 0) | currency:'BRL' }}
+                </td>
+                <td>
+                  <div class="item-actions">
+                    <button class="action-btn edit" (click)="editarItem(atributo)" title="Editar">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn delete" (click)="removerItem(atributo)" title="Remover">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="action-btn toggle"
+                            (click)="toggleComprar(atributo)"
+                            [class.completed]="atributo.comprar"
+                            title="Marcar como comprado">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              }
+              @empty {
+              <tr>
+                <td colspan="5" class="empty-message">
+                  <i class="fas fa-shopping-basket"></i>
+                  <p>Sua lista está vazia</p>
+                  <p class="empty-subtitle">Adicione itens para começar</p>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
+</div>

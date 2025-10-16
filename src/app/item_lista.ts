@@ -1,9 +1,7 @@
 export class ItemLista {
-  id?: number;
-  nome?: string;
+  id: number = 0;
+  nome: string = '';
   comprar: boolean = false;
-  agora: Date = new Date();
-  quantidade: String | undefined;
-  valor: number | undefined;
-  mensagemErro: String | undefined;
+  quantidade: string = '1';
+  valor: number = 0;
 }
