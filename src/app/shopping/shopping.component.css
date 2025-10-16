@@ -231,11 +231,28 @@ tr:hover {
 }
 
 .action-btn.edit {
-  background-color: var(--primary-color);
+  background: #64748b;
+  box-shadow: 0 2px 6px rgba(37,99,235,0.12);
+}
+
+.action-btn.edit:hover,
+.action-btn.edit:focus {
+  transform: translateY(-2px) scale(1.05);
+  filter: brightness(0.95);
+  outline: none;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.18);
 }
 
 .action-btn.delete {
-  background: linear-gradient(90deg, #e11d48 0%, #64748b 100%);
+  background: #64748b; /* neutral slate */
+  color: #fff;
+}
+
+.action-btn.delete:hover,
+.action-btn.delete:focus {
+  background: var(--danger-color);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 12px rgba(225,29,72,0.16);
 }
 
 .action-btn.toggle {
